@@ -9,8 +9,6 @@
 # Feel free to contact me if any questions
 # 
 
-.PHONY: clean install uninstall
-
 obj-m := ksocket.o
 #ksocket-objs := xxx.o yyy.o
 KDIR  := /lib/modules/$(shell uname -r)/build
@@ -33,15 +31,9 @@ endif
 all:
 	$(MAKE) -C $(KDIR) M=$(PWD) modules
 
-install: ksocket.ko
-	@install -vD ksocket.h $(KDIR)/include/net/ksocket.h
-	@install -vD ksocket.ko $(KMOD)/net/ksocket/ksocket.ko
-	-depmod -aq
-
-uninstall:
-	rm -rf $(KDIR)/include/net/ksocket.h $(KMOD)/net/ksocket/ksocket.ko
-	-depmod -aq
+install:
+	cp *.ko $(KRPC_BASE)/output
 
 clean:
-	rm -rf *.ko *.o *.mod.* .H* .tm* .*cmd Module.symvers
+	rm -rf *.ko *.o *.mod.* .H* .tm* .*cmd Module.symvers *.cmd *.order $(KRPC_BASE)/output/* -R
 
